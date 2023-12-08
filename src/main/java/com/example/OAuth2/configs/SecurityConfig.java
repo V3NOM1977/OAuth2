@@ -36,6 +36,9 @@ import java.util.UUID;
 @Configuration
 public class SecurityConfig {
 
+    // http://localhost:8080/oauth2/authorize?response_type=code&client_id=client&scope=openid&redirect_uri=https://springone.io/authorized&code_challenge=QYPAZ5NU8yvtlQ9erXrUYR-T5AGCjCF47vN-KsaI2A8&code_challenge_method=S256
+    // http://localhost:8080/oauth2/token?client_id=client&redirect_uri=https://springone.io/authorized&grant_type=authorization_code&code=dWlJMGpGlUAPz0sRU1y8suXDyWejo0_B4-WrLP-ks5kSlcdvlGG-u1OxOORvvpm7IMJaC_lMqzTX2Oh6AKHGOb2J4-Hp6PVPvGjLeUQMnWzz6h3Xyy1D0S6czbiTeU8f&code_verifier=qPsH306-ZDDaOE8DFzVn05TkN3ZZoVmI_6x4LsVglQI
+
     @Bean
     @Order(1)
     public SecurityFilterChain asSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -119,4 +122,3 @@ public class SecurityConfig {
     }
 
 }
-// http://localhost:8080/oauth2/authorize?response_type=code&client_id=client&scope=openid&redirect_uri=https://springone.io/authorized&code_challenge=80920F9D273A671229E1439D2E63921D17C462477644BB8B2250A916E395F4A8&code_challenge_method=S256
