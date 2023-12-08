@@ -85,7 +85,7 @@ public class SecurityConfig {
     public RegisteredClientRepository registeredClientRepository() {
         RegisteredClient r1 = RegisteredClient.withId(UUID.randomUUID().toString())
                 .clientId("client")
-                .clientSecret("secret")
+                .clientSecret(passwordEncoder().encode("secret"))
                 .scope(OidcScopes.OPENID)
                 .scope(OidcScopes.PROFILE)
                 .redirectUri("https://springone.io/authorized")
