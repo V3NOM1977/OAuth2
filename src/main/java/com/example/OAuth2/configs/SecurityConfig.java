@@ -39,6 +39,14 @@ public class SecurityConfig {
     // http://localhost:8080/oauth2/authorize?response_type=code&client_id=client&scope=openid&redirect_uri=https://springone.io/authorized&code_challenge=QYPAZ5NU8yvtlQ9erXrUYR-T5AGCjCF47vN-KsaI2A8&code_challenge_method=S256
     // http://localhost:8080/oauth2/token?client_id=client&redirect_uri=https://springone.io/authorized&grant_type=authorization_code&code=dWlJMGpGlUAPz0sRU1y8suXDyWejo0_B4-WrLP-ks5kSlcdvlGG-u1OxOORvvpm7IMJaC_lMqzTX2Oh6AKHGOb2J4-Hp6PVPvGjLeUQMnWzz6h3Xyy1D0S6czbiTeU8f&code_verifier=qPsH306-ZDDaOE8DFzVn05TkN3ZZoVmI_6x4LsVglQI
 
+    /**
+     * This function configures the security filter chain for an OAuth2 authorization server with an
+     * OIDC customizer and a login URL authentication entry point.
+     * 
+     * @param http The `http` parameter is an instance of `HttpSecurity`, which is a class provided by
+     * Spring Security. It allows you to configure security for your application's HTTP requests.
+     * @return The method is returning a SecurityFilterChain object.
+     */
     @Bean
     @Order(1)
     public SecurityFilterChain asSecurityFilterChain(HttpSecurity http) throws Exception {
@@ -47,6 +55,9 @@ public class SecurityConfig {
         http.getConfigurer(OAuth2AuthorizationServerConfigurer.class)
                 .oidc(Customizer.withDefaults());
 
+        // The code `http.exceptionHandling(e -> e.authenticationEntryPoint(new
+        // LoginUrlAuthenticationEntryPoint("/login")));` is configuring the authentication entry point
+        // for handling exceptions related to authentication.
         http.exceptionHandling(
                 e -> e.authenticationEntryPoint(
                         new LoginUrlAuthenticationEntryPoint("/login")));
@@ -81,6 +92,12 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * This function creates and returns a RegisteredClientRepository object with a single
+     * RegisteredClient instance.
+     * 
+     * @return The method is returning an instance of the `RegisteredClientRepository` interface.
+     */
     @Bean
     public RegisteredClientRepository registeredClientRepository() {
         RegisteredClient r1 = RegisteredClient.withId(UUID.randomUUID().toString())
@@ -97,12 +114,24 @@ public class SecurityConfig {
         return new InMemoryRegisteredClientRepository(r1);
     }
 
+    /**
+     * The function creates and returns an instance of the AuthorizationServerSettings class with
+     * default settings.
+     * 
+     * @return An instance of the AuthorizationServerSettings class is being returned.
+     */
     @Bean
     public AuthorizationServerSettings authorizationServerSettings() {
         return AuthorizationServerSettings.builder()
                 .build();
     }
 
+    /**
+     * The function generates a RSA key pair, creates a JWKSet containing the public and private keys,
+     * and returns it as a JWKSource.
+     * 
+     * @return The method is returning an instance of `JWKSource<SecurityContext>`.
+     */
     @Bean
     public JWKSource<SecurityContext> jwkSource() throws Exception {
         KeyPairGenerator kg = KeyPairGenerator.getInstance("RSA");
