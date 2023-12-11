@@ -13,7 +13,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
@@ -113,7 +113,7 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return NoOpPasswordEncoder.getInstance();
     }
 
     /**
@@ -124,27 +124,26 @@ public class SecurityConfig {
      * @return The method is returning an instance of the
      *         `RegisteredClientRepository` interface.
      */
-    @Bean
-    public RegisteredClientRepository registeredClientRepository() {
-        RegisteredClient r1 = RegisteredClient.withId(UUID.randomUUID().toString())
-                .clientId("client")
-                .clientSecret(passwordEncoder().encode("secret"))
-                .scope(OidcScopes.OPENID)
-                .scope(OidcScopes.PROFILE)
-                .redirectUri("https://springone.io/authorized")
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
-                .tokenSettings(
-                        TokenSettings.builder()
-                                .accessTokenFormat(OAuth2TokenFormat.REFERENCE)
-                                .accessTokenTimeToLive(Duration.ofSeconds(900))
-                                .build()
-                )
-                .build();
+    // @Bean
+    // public RegisteredClientRepository registeredClientRepository() {
+    //     RegisteredClient r1 = RegisteredClient.withId(UUID.randomUUID().toString())
+    //             .clientId("client")
+    //             .clientSecret(passwordEncoder().encode("secret"))
+    //             .scope(OidcScopes.OPENID)
+    //             .scope(OidcScopes.PROFILE)
+    //             .redirectUri("https://springone.io/authorized")
+    //             .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+    //             .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+    //             .authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+    //             .tokenSettings(
+    //                     TokenSettings.builder()
+    //                             .accessTokenFormat(OAuth2TokenFormat.REFERENCE)
+    //                             .accessTokenTimeToLive(Duration.ofSeconds(900))
+    //                             .build())
+    //             .build();
 
-        return new InMemoryRegisteredClientRepository(r1);
-    }
+    //     return new InMemoryRegisteredClientRepository(r1);
+    // }
 
     /**
      * The function creates and returns an instance of the
